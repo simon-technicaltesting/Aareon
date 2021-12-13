@@ -2,3 +2,9 @@ AareonTechnicalTest/.vs
 AareonTechnicalTest/AareonTechnicalTest/bin
 AareonTechnicalTest/AareonTechnicalTest/obj
 AareonTechnicalTest/AareonTechnicalTest/AareonTechnicalTest.csproj.user
+AareonTechnicalTest/.idea
+src/.idea
+src/.vs
+src/AareonTechnicalTest/bin
+src/AareonTechnicalTest/obj
+*.user
