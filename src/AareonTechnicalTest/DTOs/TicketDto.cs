@@ -1,4 +1,6 @@
 ﻿using AareonTechnicalTest.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AareonTechnicalTest.DTOs
 {
@@ -9,10 +11,13 @@ namespace AareonTechnicalTest.DTOs
             Id = ticket.Id;
             Content = ticket.Content;
             PersonId = ticket.PersonId;
+            Notes = ticket.Notes.Select(x => new NoteDto(x)).ToList();
         }
 
-        public int Id { get; set; }
-        public string Content { get; set; }
-        public int PersonId { get; set; }
+        public int Id { get; }
+        public string Content { get; }
+        public int PersonId { get; }
+
+        public List<NoteDto> Notes { get; }
     }
 }

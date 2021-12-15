@@ -1,4 +1,6 @@
-﻿using AareonTechnicalTest.DTOs;
+﻿using AareonTechnicalTest.DataAccess;
+using AareonTechnicalTest.DTOs;
+using AareonTechnicalTest.DTOs.Inbound.Tickets;
 using AareonTechnicalTest.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,13 +14,17 @@ namespace AareonTechnicalTest.Controllers
     public class TicketsController : ControllerBase
     {
         private readonly ILogger<TicketsController> _logger;
+        private readonly ITicketDataAccess _ticketDataAccess;
         private readonly ApplicationContext _context;
 
         public TicketsController(
             ILogger<TicketsController> logger,
+            ITicketDataAccess ticketDataAccess,
             ApplicationContext context)
         {
             _logger = logger;
+            _ticketDataAccess = ticketDataAccess;
+            // TODO Remove the need for direct context access in controller
             _context = context;
         }
 
@@ -36,24 +42,19 @@ namespace AareonTechnicalTest.Controllers
                 return BadRequest("PersonId is invalid");
             }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var newTicket = new Ticket {Content = createTicket.Content, PersonId = createTicket.PersonId};
-            _context.Tickets.Add(newTicket);
+            _context.Add(newTicket);
             await _context.SaveChangesAsync();
 
             _logger.LogInformation("Ticket '{Id}' created", newTicket.Id);
 
-            return CreatedAtAction(nameof(GetTicket), new {id = newTicket.Id}, newTicket);
+            return CreatedAtAction(nameof(GetTicket), new {id = newTicket.Id},  new TicketDto(newTicket));
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetTicket(int id)
         {
-            var matchedTicket = await _context.Tickets.FindAsync(id);
+            var matchedTicket = await _ticketDataAccess.GetTicket(id);
             if (matchedTicket != null)
             {
                 return Ok(new TicketDto(matchedTicket));
@@ -96,7 +97,7 @@ namespace AareonTechnicalTest.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 _logger.LogError("Ticket '{Id}' failed to update due to conflict", id);
-                
+
                 return Conflict("Data was updated during update request, please recheck and try again");
             }
         }

@@ -15,8 +15,8 @@ namespace AareonTechnicalTest
         }
 
         public virtual DbSet<Person> Persons { get; set; }
-
         public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<Note> Notes { get; set; }
 
         public string DatabasePath { get; set; }
 
@@ -29,6 +29,7 @@ namespace AareonTechnicalTest
         {
             PersonConfig.Configure(modelBuilder);
             TicketConfig.Configure(modelBuilder);
+            NoteConfig.Configure(modelBuilder);
         }
     }
 }

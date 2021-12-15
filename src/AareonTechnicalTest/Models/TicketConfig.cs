@@ -6,11 +6,9 @@ namespace AareonTechnicalTest.Models
     {
         public static void Configure(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Person>(
-                entity =>
-                {
-                    entity.HasKey(e => e.Id);
-                });
+            modelBuilder
+                .Entity<Ticket>(
+                    entity => { entity.HasKey(ticket => ticket.Id); });
         }
     }
 }
