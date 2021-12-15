@@ -8,3 +8,6 @@ src/.vs
 src/AareonTechnicalTest/bin
 src/AareonTechnicalTest/obj
 *.user
+src/packages
+src/AareonTechnicalTest.Tests/obj
+src/AareonTechnicalTest.Tests/bin
